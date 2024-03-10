@@ -1,21 +1,30 @@
-version : "3"
-
+version: "3.9"
 services:
-  mysqldb:
-    image: mysql:5.7
+
+  db-mysql:
+    image: "mysql:5.6"
+    container_name: db-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=timesheet-devops-db
+    ports:
+      - "3309:3306"
     restart: unless-stopped
-    ports:
-      - 3307:3306
-    volumes:
-      - db:/var/lib/mysql
-  timesheet-backend:
-    depends_on:
-      - mysqldb
+
+  universite:
+    container_name: Timesheet DevOps
     build: ./
-    restart: on-failure
     ports:
-      - 6868:8083
-    volumes:
-      - .m2:/root/.m2
-    stdin_open: true
-    tty: true
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-mysql:3306/timesheet-devops-db?createDatabaseIfNotExist=true&userSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+    depends_on:
+      - db-mysql
+
+
+
+
+
