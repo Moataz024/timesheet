@@ -12,8 +12,8 @@ services:
       - "3309:3306"
     restart: unless-stopped
 
-  universite:
-    container_name: Timesheet DevOps
+  timesheet:
+    container_name: timesheet-devops
     build: ./
     ports:
       - "8083:8083"
